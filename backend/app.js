@@ -23,7 +23,7 @@ const client = mqtt.connect(connectUrl, {
   reconnectPeriod: 1000,
 })
 
-const topic = 'test'
+const topic = '4gi/electronique'
 client.on('connect', () => {
   console.log('Connected')
   client.subscribe([topic], () => {
@@ -39,7 +39,8 @@ client.on('connect', () => {
 
 client.on('message', (topic, payload) => {
   console.log('Received Message:', topic, payload.toString())
-  value.energy = payload.toString()
+  value = JSON.parse(payload.toString())
+  console.log(value)
 })
 
 app.use((req, res, next) => {

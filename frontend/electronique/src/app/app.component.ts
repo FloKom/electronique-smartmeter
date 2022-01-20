@@ -11,7 +11,7 @@ import { MeasureService } from './services/Measure.service';
 export class AppComponent implements OnInit, OnDestroy {
   
   subscription:Subscription = new Subscription()
-  public measure:Measure = new Measure("")
+  public measure:Measure = new Measure("","","","","","")
   public interval:Subscription = new Subscription()
   toogle:boolean = true
   constructor(private energyService:MeasureService){
@@ -23,25 +23,22 @@ export class AppComponent implements OnInit, OnDestroy {
         this.measure = measure 
       }
     )
-
-    
-    
-    /* this.interval = interval(1000).subscribe(
+    this.interval = interval(5500).subscribe(
       ()=>{
         this.energyService.getMeasure()
       },
       (err)=>{
         console.log('Error:' + err)
       }
-    ) */
+    )
 
     this.energyService.emitMeasure()
 
-    setInterval(()=>{
-      console.log("1")
-      this.energyService.getMeasure()
-      console.log(this.measure)
-    }, 1000)
+    // setInterval(()=>{
+    //   console.log("1")
+    //   this.energyService.getMeasure()
+    //   console.log(this.measure)
+    // }, 1000)
   
   }
 

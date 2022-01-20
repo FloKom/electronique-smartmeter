@@ -5,7 +5,7 @@ import { Measure } from '../models/measure.models'
 
 @Injectable()
 export class MeasureService{
-    measure:Measure = new Measure("");
+    measure:Measure = new Measure("","","","","","");
     measureSubject = new Subject<any>()
     constructor(private httpClient:HttpClient){}
 
@@ -30,7 +30,7 @@ export class MeasureService{
     }
     getMeasure(){
         this.httpClient
-        .get<any>('http://localhost:3000/api')
+        .get<Measure>('http://localhost:3000/api')
         .subscribe(
           (response) => {
             this.measure = response;
