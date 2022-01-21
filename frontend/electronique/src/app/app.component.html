@@ -6,5 +6,9 @@
 <!-- * * * * * * * * * Delete the template below * * * * * * * * * * -->
 <!-- * * * * * * * to get started with your project! * * * * * * * * -->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<p>{{measure.voltage}}</p>
+<p>Tension:{{measure.voltage}} V</p>
+<p>Courant:{{measure.current}} A</p>
+<p>Energy:{{measure.finalEnergyValue}} Wh</p>
+<p>Puissance:{{measure.realPower}} W</p>
+<p>Etat:{{measure.etat}}</p>
 <button (click)="toggleCurrent()">button</button>
