@@ -7,6 +7,7 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const app = express()
 let present = true
+let send = false
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -63,21 +64,39 @@ client.on('message', (topic, payload) => {
   console.log('Received Message:', topic, payload.toString())
   value = JSON.parse(payload.toString())
   console.log(value)
-
-  Energy.find().then(
-    (energies) => {
-      for(let measure of energies){
-        if( ( ((new Date(measure.date)).getMonth()) == ((new Date(Date.now())).getMonth())) && ( ((new Date(measure.date)).getDate()) === ((new Date(Date.now())).getDate()) ) && ( ((new Date(measure.date)).getFullYear()) === ((new Date(Date.now())).getFullYear()) )){
-          present = false
+  setInterval(() => {
+    send = true
+  }, 20000);
+  if(send){
+    Energy.find().then(
+      (energies) => {
+        for(let measure of energies){
+          if( ( ((new Date(measure.date)).getMonth()) == ((new Date(Date.now())).getMonth())) && ( ((new Date(measure.date)).getDate()) === ((new Date(Date.now())).getDate()) ) && ( ((new Date(measure.date)).getFullYear()) === ((new Date(Date.now())).getFullYear()) )){
+            present = false
+            const energy = new Energy({
+              _id: measure._id,
+              energy: value.finalEnergyValue,
+              date: measure.date
+            });
+            Energy.updateOne({_id: measure._id}, energy).then(
+              () => {
+                console.log('enregistrer avec success')
+              }
+            ).catch(
+              (error) => {
+                console.log(error)
+              }
+            );
+          }
+          send = false
+        }
+        if(present){
           const energy = new Energy({
-            _id: measure._id,
             energy: value.finalEnergyValue,
-            date: measure.date
+            date: Date.now()
           });
-          Energy.updateOne({_id: measure._id}, energy).then(
-            () => {
-              console.log('enregistrer avec success')
-            }
+          energy.save().then(
+            console.log("save successfull !")
           ).catch(
             (error) => {
               console.log(error)
@@ -85,25 +104,13 @@ client.on('message', (topic, payload) => {
           );
         }
       }
-      if(present){
-        const energy = new Energy({
-          energy: value.finalEnergyValue,
-          date: Date.now()
-        });
-        energy.save().then(
-          console.log("save successfull !")
-        ).catch(
-          (error) => {
-            console.log(error)
-          }
-        );
+    ).catch(
+      (error) => {
+       console.log(error)
       }
-    }
-  ).catch(
-    (error) => {
-     console.log(error)
-    }
-  );
+    );
+  }
+  
  
   
 
