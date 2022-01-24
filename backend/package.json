@@ -9,8 +9,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "body-parser": "^1.19.1",
     "express": "^4.17.2",
-    "mqtt": "^4.3.2"
+    "mongoose": "^6.1.7",
+    "mongoose-unique-validator": "^3.0.0",
+    "mqtt": "^4.3.2",
+    "nodemailer": "^6.7.2"
   }
 }

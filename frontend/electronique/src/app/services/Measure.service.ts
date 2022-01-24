@@ -17,7 +17,7 @@ export class MeasureService{
         mega:2
       }
       this.httpClient
-      .post<any>('http://localhost:3000/api', value )
+      .post<any>('http://localhost:3000/api', {etat:value} )
       .subscribe(
         (reponse) => {
           console.log(reponse);
